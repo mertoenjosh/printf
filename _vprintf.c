@@ -1,4 +1,12 @@
 #include "main.h"
+/**
+*_vprintf-prints out the arguements 
+* print_string-prints strings
+* print_int-printes intergers*format
+*@format:lists the number of arguements in function prototype
+*@args:arguements found in function
+*Return:returns the number of character printed
+*/
 
 int _vprintf(const char *format, va_list args)
 {
