@@ -1,9 +1,10 @@
 #include "main.h"
 /**
-* _printf-handles the  conversion specifiers c ,s ,%
-*@*format:const character string
-*Return:length of of characters
-*/
+ * _printf - handles the  conversion specifiers c ,s ,%
+ *
+ * @format: const character string
+ * Return: length of of characters
+ */
 int _printf(const char *format, ...)
 {
 	int len = 0;
