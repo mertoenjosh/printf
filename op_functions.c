@@ -3,7 +3,7 @@
  * unsigned_num_to_str - converts number to string
  * @number : number converted to string
  * @base : base number of a numbers
- * @buffer : reserved space 
+ * @buffer : reserved space
  */
 void unsigned_num_to_str(uint64_t number, int base, char *buffer)
 {
@@ -38,7 +38,9 @@ void unsigned_num_to_str(uint64_t number, int base, char *buffer)
 
 /**
  * num_to_str - converts number to string
- *
+ * @number : number converted to string
+ * @base : base number of a numbers
+ * @buffer : reserved space
  */
 void num_to_str(uint64_t number, int base, char *buffer)
 {
