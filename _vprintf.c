@@ -119,7 +119,7 @@ int _vprintf(const char *format, va_list args)
 
 /**
  * print_string - prints out strings
- * 
+ * @s: a pointer to a string character
  */
 void print_string(char *s)
 {
@@ -132,7 +132,7 @@ void print_string(char *s)
 
 /**
  * print_int - prints out intergers
- * 
+ * @i:an interger
  */
 void print_int(int i)
 {
