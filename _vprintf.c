@@ -1,12 +1,11 @@
 #include "main.h"
 /**
-*_vprintf-prints out the arguements 
-* print_string-prints strings
-* print_int-printes intergers*format
-*@format:lists the number of arguements in function prototype
-*@args:arguements found in function
-*Return:returns the number of character printed
-*/
+ * _vprintf-prints out the arguements
+ *
+ * @format:lists the number of arguements in function prototype
+ * @args:arguements found in function
+ * Return:returns the number of character printed
+ */
 
 int _vprintf(const char *format, va_list args)
 {
@@ -118,6 +117,10 @@ int _vprintf(const char *format, va_list args)
 	return (len);
 }
 
+/**
+ * print_string - prints out strings
+ * 
+ */
 void print_string(char *s)
 {
 	while (*s)
@@ -127,6 +130,10 @@ void print_string(char *s)
 	}
 }
 
+/**
+ * print_int - prints out intergers
+ * 
+ */
 void print_int(int i)
 {
 }
