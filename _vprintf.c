@@ -62,12 +62,13 @@ int _vprintf(const char *format, va_list args)
 					break;
 				case 'p':
 					_putchar('0');
-                                        _putchar('x');
-                                        void *n = va_arg(args, void *);
-                                        unsigned_num_to_str((uint64_t) n, 16, buf);
-                                        for (i = 0; buf[i]; i++)
-                                                _putchar(buf[i]);
-                                        break;
+                     _putchar('x');
+                    void *n = va_arg(args, void *);
+                    unsigned_num_to_str((uint64_t) n, 16, buf);
+
+					for (i = 0; buf[i]; i++)
+                    	_putchar(buf[i]);
+                    break;
 
 				case '%':
 					_putchar('%');
@@ -107,9 +108,9 @@ void print_string(char *s)
 
 /**
  *print_num - prints out the numbers
- *@base: base of a mumber 
+ *@base: base of a mumber
  *@is_long: a long interger
- *@args:function arguements 
+ *@args:function arguements
  */
 void print_num(va_list args, int base, int is_long)
 {
@@ -127,8 +128,10 @@ void print_num(va_list args, int base, int is_long)
 
 /**
  *print_unsigned_num - prints unsigned numbers
- *
- */ 
+ *@args: function arguements
+ *@base:base of a number
+ *@is_long:long interger
+ */
 void print_unsigned_num(va_list args, int base, int is_long)
 {
 	int i;
