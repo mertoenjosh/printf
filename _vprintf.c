@@ -94,6 +94,7 @@ int _vprintf(const char *format, va_list args)
 
 /**
  * print_string - prints out strings
+ *@s:pointer to a string character
  */
 void print_string(char *s)
 {
@@ -104,6 +105,11 @@ void print_string(char *s)
 	}
 }
 
+/**
+ *print_num - prints out the numbers
+ *@base - base of a mumber 
+ *@is_long - a long interger
+ */
 void print_num(va_list args, int base, int is_long)
 {
 	int i;
