@@ -1,0 +1,54 @@
+#include "main.h"
+/**
+ * unsigned_num_to_str - converts number to string
+ * @number : number converted to string
+ * @base : base number of a numbers
+ * @buffer : reserved space
+ */
+void unsigned_num_to_str(uint64_t number, int base, char *buffer)
+{
+	char buf[65];
+	int cur = 0;
+	int i = 0;
+
+	if (number == 0)
+	{
+		*buffer++ = '0';
+		*buffer = 0;
+		return;
+	}
+	for (i = 0; i < 65; i++)
+		buf[i] = 0;
+
+	while (number)
+	{
+		int digit = number % base;
+
+		if (digit >= 10)
+			buf[cur++] = 'a' + (digit - 10);
+		else
+			buf[cur++] = '0' + digit;
+		number /= base;
+	}
+
+	for (i = cur - 1; i != 0; i--)
+		*buffer++ = buf[i];
+	*buffer++ = buf[0];
+	*buffer = 0;
+}
+
+/**
+ * num_to_str - converts number to string
+ * @number : number converted to string
+ * @base : base number of a numbers
+ * @buffer : reserved space
+ */
+void num_to_str(uint64_t number, int base, char *buffer)
+{
+	if ((int) number < 0)
+	{
+		*buffer++ = '-';
+		number = (-number);
+	}
+	unsigned_num_to_str(number, base, buffer);
+}
