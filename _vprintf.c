@@ -125,6 +125,10 @@ void print_num(va_list args, int base, int is_long)
 		_putchar(buf[i]);
 }
 
+/**
+ *print_unsigned_num - prints unsigned numbers
+ *
+ */ 
 void print_unsigned_num(va_list args, int base, int is_long)
 {
 	int i;
