@@ -62,14 +62,13 @@ int _vprintf(const char *format, va_list args)
 					break;
 				case 'p':
 					_putchar('0');
-                     _putchar('x');
-                   
+					_putchar('x');
 					n = va_arg(args, void *);
-                    unsigned_num_to_str((uint64_t) n, 16, buf);
+					unsigned_num_to_str((uint64_t) n, 16, buf);
 
 					for (i = 0; buf[i]; i++)
-                    	_putchar(buf[i]);
-                    break;
+						_putchar(buf[i]);
+					break;
 
 				case '%':
 					_putchar('%');
