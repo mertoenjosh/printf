@@ -9,11 +9,7 @@
 
 int _vprintf(const char *format, va_list args)
 {
-	int is_modulos = 0;
-	int len = 0;
-	int is_long = 0;
-	int reset = 1;
-	int num, i;
+	int is_modulos = 0, len = 0, is_long = 0, reset = 1, i;
 	int64_t _num;
 	char buf[32];
 
@@ -34,15 +30,11 @@ int _vprintf(const char *format, va_list args)
 			switch (*format)
 			{
 				case 'c':
-					char ch = va_arg(args, int);
-
-					_putchar(ch);
+					_putchar(va_arg(args, int));
 					--len;
 					break;
 				case 's':
-					char *s = va_arg(args, char *);
-
-					print_string(s);
+					print_string(va_arg(args, char *));
 					--len;
 					break;
 				case 'l':
@@ -52,48 +44,31 @@ int _vprintf(const char *format, va_list args)
 					break;
 				case 'd':
 				case 'i':
-					_num = (is_long == 1) ? va_arg(args, long) : va_arg(args, int);
-
-					num_to_str(_num, 10, buf);
-					for (i = 0; buf[i]; i++)
-						_putchar(buf[i]);
+					print_num(args, 10, is_long);
 					--len;
 					break;
 				case 'u':
-					_num = (is_long == 1) ? va_arg(args, unsigned long) : va_arg(args, unsigned int);
-
-					unsigned_num_to_str(_num, 10, buf);
-					for (i = 0; buf[i]; i++)
-						_putchar(buf[i]);
+					print_unsigned_num(args, 10, is_long);
 					--len;
 					break;
 				case 'x':
 				case 'X':
-					_num = (is_long == 1) ? va_arg(args, unsigned long) : va_arg(args, unsigned int);
-
-					unsigned_num_to_str(_num, 16, buf);
-					for (i = 0; buf[i]; i++)
-						_putchar(buf[i]);
+					print_unsigned_num(args, 16, is_long);
 					--len;
 					break;
 				case 'o':
-					_num = (is_long == 1) ? va_arg(args, unsigned long) : va_arg(args, unsigned int);
-
-					unsigned_num_to_str(_num, 8, buf);
-					for (i = 0; buf[i]; i++)
-						_putchar(buf[i]);
+					print_unsigned_num(args, 8, is_long);
 					--len;
 					break;
 				case 'p':
 					_putchar('0');
-					_putchar('x');
-					void *n = va_arg(args, void *);
+                                        _putchar('x');
+                                        void *n = va_arg(args, void *);
+                                        unsigned_num_to_str((uint64_t) n, 16, buf);
+                                        for (i = 0; buf[i]; i++)
+                                                _putchar(buf[i]);
+                                        break;
 
-					unsigned_num_to_str((uint64_t) n, 16, buf);
-					for (i = 0; buf[i]; i++)
-						_putchar(buf[i]);
-					--len;
-					break;
 				case '%':
 					_putchar('%');
 					--len;
@@ -119,7 +94,6 @@ int _vprintf(const char *format, va_list args)
 
 /**
  * print_string - prints out strings
- * 
  */
 void print_string(char *s)
 {
@@ -130,10 +104,30 @@ void print_string(char *s)
 	}
 }
 
-/**
- * print_int - prints out intergers
- * 
- */
-void print_int(int i)
+void print_num(va_list args, int base, int is_long)
 {
+	int i;
+	int64_t _num;
+	char buf[32];
+
+	_num = (is_long == 1) ? va_arg(args, long) :
+		va_arg(args, int);
+
+	num_to_str(_num, base, buf);
+	for (i = 0; buf[i]; i++)
+		_putchar(buf[i]);
+}
+
+void print_unsigned_num(va_list args, int base, int is_long)
+{
+	int i;
+	int64_t _num;
+	char buf[32];
+
+	_num = (is_long == 1) ? va_arg(args, unsigned long) :
+		va_arg(args, unsigned int);
+
+	unsigned_num_to_str(_num, base, buf);
+	for (i = 0; buf[i]; i++)
+		_putchar(buf[i]);
 }
