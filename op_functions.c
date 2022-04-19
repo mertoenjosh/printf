@@ -1,5 +1,10 @@
 #include "main.h"
-
+/**
+ * unsigned_num_to_str - converts number to string
+ * @number : number converted to string
+ * @base : base number of a numbers
+ * @buffer : reserved space 
+ */
 void unsigned_num_to_str(uint64_t number, int base, char *buffer)
 {
 	char buf[65];
@@ -31,6 +36,10 @@ void unsigned_num_to_str(uint64_t number, int base, char *buffer)
 	*buffer = 0;
 }
 
+/**
+ * num_to_str - converts number to string
+ *
+ */
 void num_to_str(uint64_t number, int base, char *buffer)
 {
 	if ((int) number < 0)
