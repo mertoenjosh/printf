@@ -10,8 +10,8 @@
 int _vprintf(const char *format, va_list args)
 {
 	int is_modulos = 0, len = 0, is_long = 0, reset = 1, i;
-	int64_t _num;
 	char buf[32];
+	void *n;
 
 	while (format[len])
 		len++;
@@ -63,7 +63,8 @@ int _vprintf(const char *format, va_list args)
 				case 'p':
 					_putchar('0');
                      _putchar('x');
-                    void *n = va_arg(args, void *);
+                   
+					n = va_arg(args, void *);
                     unsigned_num_to_str((uint64_t) n, 16, buf);
 
 					for (i = 0; buf[i]; i++)

@@ -9,6 +9,7 @@ void unsigned_num_to_str(uint64_t number, int base, char *buffer)
 {
 	char buf[65];
 	int cur = 0;
+	int i = 0;
 
 	if (number == 0)
 	{
@@ -16,8 +17,8 @@ void unsigned_num_to_str(uint64_t number, int base, char *buffer)
 		*buffer = 0;
 		return;
 	}
-	for (int i = 0; i < 65; i++)
-	buf[i] = 0;
+	for (i = 0; i < 65; i++)
+		buf[i] = 0;
 
 	while (number)
 	{
@@ -30,7 +31,7 @@ void unsigned_num_to_str(uint64_t number, int base, char *buffer)
 		number /= base;
 	}
 
-	for (int i = cur - 1; i != 0; i--)
+	for (i = cur - 1; i != 0; i--)
 		*buffer++ = buf[i];
 	*buffer++ = buf[0];
 	*buffer = 0;
