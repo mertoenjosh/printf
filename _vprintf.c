@@ -10,7 +10,7 @@
 int _vprintf(const char *format, va_list args)
 {
 	int is_modulos = 0, len = 0, is_long = 0, reset = 1, i;
-	char buf[32];
+	char *buf = malloc(1024 * sizeof(char));
 	void *n;
 
 	while (format[len])
