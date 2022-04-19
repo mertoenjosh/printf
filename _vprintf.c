@@ -107,8 +107,9 @@ void print_string(char *s)
 
 /**
  *print_num - prints out the numbers
- *@base - base of a mumber 
- *@is_long - a long interger
+ *@base: base of a mumber 
+ *@is_long: a long interger
+ *@args:function arguements 
  */
 void print_num(va_list args, int base, int is_long)
 {
