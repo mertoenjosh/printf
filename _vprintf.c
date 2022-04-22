@@ -1,139 +1,83 @@
 #include "main.h"
 
 /**
- * print_int - prints integers
- * @args: list of arguments
- * @s: separator
+ * _vprintf - does the actual printinf of the buffer to stdout
+ *
+ * @format: string to replace the specifiers
+ * @args: arguments to replace the specifiers
+ *
+ * Return: length of the string to print
  */
 
-void print_int(va_list args, int is_long)
+int _vprintf(const char *format, va_list args)
 {
-	char buf[32];
-	int64_t _num;
-	int i;
-
-	_num = (is_long == 1) ? va_arg(args, long) :
-		va_arg(args, int);
-
-	num_to_str(_num, 10, buf);
-	for (i = 0; buf[i]; i++)
-		_putchar(buf[i]);
-}
-
-/**
- * print_char - prints chars
- *
- * @args: arguments
- * @s: separator
- */
-
-void print_char(va_list args, int is_long __attribute__((unused)))
-{
-        _putchar(va_arg(args, int));
-}
-
-/**
- * print_str - prints strings
- *
- * @args: arguments
- * @s: separator
- */
-
-void print_str(va_list args,  int is_long __attribute__((unused)))
-{
-        char *str = va_arg(args, char *);
-	while (*str)
-	{
-		_putchar(*str);
-		str++;
-	}
-}
-
-/**
- * get_op_func - gets operation to perfom
- *
- * @s: op passed by user as arg
- *
- * Return: result of operation
- */
-
-int (*get_op_func(char *s))(int, int)
-{
-}
-
-/**
- * _vprintf-prints out the arguements
- *
- * @format:lists the number of arguements in function prototype
- * @args:arguements found in function
- * Return:returns the number of character printed
- */
-
-int _vprintk(const char *format, va_list args)
-{
-	int j, len = 0, is_modulos =  0, is_long = 0, found = 0, reset = 1;
-	int64_t _num;
-	char buf[32];
+	int j, i;
+	int len = 0;
+	char *buffer;
+	char *s;
 
 	type_t type[] = {
-                {"c", print_char},
-                {"s", print_str},
-		{"d", print_int},
-		{"i", print_int},
-                {NULL, NULL}
-        };
+		{"c", print_char},
+		{"s", print_str},
+		{"i", print_num},
+		{"d", print_num},
+	
+		{"o", print_oct},
+		{"p", print_p},
+		{"u", print_u},
+		{"x", print_h},
+		{"X", print_X},
+		{NULL, NULL}
+	};
 
-	while (format[len])
-		len++;
+	buffer = malloc(1024 * sizeof(char));
 
-	while (*format)
-	{	
-		if (is_modulos == 0 )
-		{
-			if (*format == '%')
-				is_modulos = 1;
-
-			else
-				_putchar(*format);
-		}
-		else if	(is_modulos == 1)
-		{
-			j = 0;
-			while (j < 5 && found == 0)
-			{
-				if (*format == *(type[j]).op)
-				{
-					type[j].f(args, is_long);
-					found = 1;
-					--len;
-				}
-				else if (*format == '%')
-				{
-					_putchar('%');
-					found = 1;
-					--len;
-				}
-				else
-				{
-					_putchar('%');
-					_putchar(*format);
-					found = 1;
-				}
-				j++;
-			}
-
-			if (reset == 1)
-                        {
-                                is_modulos = 0;
-				found = 0;
-                                is_long = 0;
-                        }
-                        else
-                        {
-                                reset = 1;
-                        }
-		}
-		format++;
+	if (!buffer)
+	{
+		free(buffer);
+		return (-1);
 	}
+
+	if (format == NULL || args == NULL)
+		return (-1);
+
+	for (i = 0; format[i] != '\0'; i++)
+	{
+		if (format[i] == '%' && format[i + 1] == '%')
+			continue;
+		else if (format[i] == '%')
+		{
+			if (format[i + 1] == ' ')
+				i += pos(format, i);
+			for (j = 0; type[j].f != NULL; j++)
+			{
+				if (format[i + 1] == *(type[j].op))
+				{
+					s = type[j].f(args);
+					if (s == NULL)
+						return (-1);
+					_strlen(s);
+					_strncat(buffer, s, len);
+					len += _strlen(s);
+					i++;
+					break;
+				}
+			}
+			if (type[j].f == NULL)
+			{
+				buffer[len] = format[i];
+				len++;
+			}
+		}
+		else
+		{
+			buffer[len] = format[i];
+			len++;
+		}
+	}
+
+	buffer[len] = '\0';
+	write(1, buffer, len);
+	free(buffer);
 	return (len);
 }
