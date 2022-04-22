@@ -21,7 +21,7 @@ int _vprintf(const char *format, va_list args)
 		{"s", print_str},
 		{"i", print_num},
 		{"d", print_num},
-	
+		{"b", print_bin},
 		{"o", print_oct},
 		{"p", print_p},
 		{"u", print_u},
