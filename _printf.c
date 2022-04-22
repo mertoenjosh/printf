@@ -1,23 +1,22 @@
 #include "main.h"
 
 /**
- * _printf - handles the  conversion specifiers c ,s ,%
+ * _printf - formatted output conversion and print data.
+ * @format: input string.
  *
- * @format: const character string
- * Return: length of of characters
+ * Return: number of chars printed.
  */
 int _printf(const char *format, ...)
 {
-	int len = 0;
+	va_list arguments;
+	int len;
 
-	va_list args;
+	va_start(arguments, format);
 
-	va_start(args, format);
-
-	if (format == NULL || args == NULL)
+	if (format == NULL || arguments == NULL)
 		return (-1);
 
-	len = _vprintf(format, args);
-	va_end(args);
+	len = _vprintf(format, arguments);
+	va_end(arguments);
 	return (len);
 }
