@@ -1,4 +1,5 @@
 #include "main.h"
+
 /**
  * _printf - handles the  conversion specifiers c ,s ,%
  *
@@ -13,9 +14,10 @@ int _printf(const char *format, ...)
 
 	va_start(args, format);
 
+	if (format == NULL || args == NULL)
+		return (-1);
+
 	len = _vprintf(format, args);
-
 	va_end(args);
-
 	return (len);
 }

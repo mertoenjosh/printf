@@ -1,148 +1,83 @@
 #include "main.h"
+
 /**
- * _vprintf-prints out the arguements
+ * _vprintf - does the actual printinf of the buffer to stdout
  *
- * @format:lists the number of arguements in function prototype
- * @args:arguements found in function
- * Return:returns the number of character printed
+ * @format: string to replace the specifiers
+ * @args: arguments to replace the specifiers
+ *
+ * Return: length of the string to print
  */
 
 int _vprintf(const char *format, va_list args)
 {
-	int is_modulos = 0, len = 0, is_long = 0, reset = 1, i;
-	char buf[32];
-	void *n;
+	int j, i;
+	int len = 0;
+	char *buffer;
+	char *s;
 
-	while (format[len])
-		len++;
+	type_t type[] = {
+		{"c", print_char},
+		{"s", print_str},
+		{"i", print_num},
+		{"d", print_num},
+		{"b", print_bin},
+		{"o", print_oct},
+		{"p", print_p},
+		{"u", print_u},
+		{"x", print_h},
+		{"X", print_X},
+		{NULL, NULL}
+	};
 
-	while (*format)
+	buffer = malloc(1024 * sizeof(char));
+
+	if (!buffer)
 	{
-		if (is_modulos == 0)
-		{
-			if (*format == '%')
-				is_modulos = 1;
-			else
-				_putchar(*format);
-		}
-		else if (is_modulos == 1)
-		{
-			switch (*format)
-			{
-				case 'c':
-					_putchar(va_arg(args, int));
-					--len;
-					break;
-				case 's':
-					print_string(va_arg(args, char *));
-					--len;
-					break;
-				case 'l':
-					is_long = 1;
-					reset = 0;
-					--len;
-					break;
-				case 'd':
-				case 'i':
-					print_num(args, 10, is_long);
-					--len;
-					break;
-				case 'u':
-					print_unsigned_num(args, 10, is_long);
-					--len;
-					break;
-				case 'x':
-				case 'X':
-					print_unsigned_num(args, 16, is_long);
-					--len;
-					break;
-				case 'o':
-					print_unsigned_num(args, 8, is_long);
-					--len;
-					break;
-				case 'p':
-					_putchar('0');
-                     _putchar('x');
-                   
-					n = va_arg(args, void *);
-                    unsigned_num_to_str((uint64_t) n, 16, buf);
-
-					for (i = 0; buf[i]; i++)
-                    	_putchar(buf[i]);
-                    break;
-
-				case '%':
-					_putchar('%');
-					--len;
-					break;
-				default:
-					_putchar('%');
-					_putchar(*format);
-			}
-			if (reset == 1)
-			{
-				is_modulos = 0;
-				is_long = 0;
-			}
-			else
-			{
-				reset = 1;
-			}
-		}
-		format++;
+		free(buffer);
+		return (-1);
 	}
+
+	if (format == NULL || args == NULL)
+		return (-1);
+
+	for (i = 0; format[i] != '\0'; i++)
+	{
+		if (format[i] == '%' && format[i + 1] == '%')
+			continue;
+		else if (format[i] == '%')
+		{
+			if (format[i + 1] == ' ')
+				i += pos(format, i);
+			for (j = 0; type[j].f != NULL; j++)
+			{
+				if (format[i + 1] == *(type[j].op))
+				{
+					s = type[j].f(args);
+					if (s == NULL)
+						return (-1);
+					_strlen(s);
+					_strncat(buffer, s, len);
+					len += _strlen(s);
+					i++;
+					break;
+				}
+			}
+			if (type[j].f == NULL)
+			{
+				buffer[len] = format[i];
+				len++;
+			}
+		}
+		else
+		{
+			buffer[len] = format[i];
+			len++;
+		}
+	}
+
+	buffer[len] = '\0';
+	write(1, buffer, len);
+	free(buffer);
 	return (len);
-}
-
-/**
- * print_string - prints out strings
- *@s:pointer to a string character
- */
-void print_string(char *s)
-{
-	while (*s)
-	{
-		_putchar(*s);
-		s++;
-	}
-}
-
-/**
- *print_num - prints out the numbers
- *@base: base of a mumber
- *@is_long: a long interger
- *@args:function arguements
- */
-void print_num(va_list args, int base, int is_long)
-{
-	int i;
-	int64_t _num;
-	char buf[32];
-
-	_num = (is_long == 1) ? va_arg(args, long) :
-		va_arg(args, int);
-
-	num_to_str(_num, base, buf);
-	for (i = 0; buf[i]; i++)
-		_putchar(buf[i]);
-}
-
-/**
- *print_unsigned_num - prints unsigned numbers
- *@args: function arguements
- *@base:base of a number
- *@is_long:long interger
- */
-void print_unsigned_num(va_list args, int base, int is_long)
-{
-	int i;
-	int64_t _num;
-	char buf[32];
-
-	_num = (is_long == 1) ? va_arg(args, unsigned long) :
-		va_arg(args, unsigned int);
-
-	unsigned_num_to_str(_num, base, buf);
-	for (i = 0; buf[i]; i++)
-		_putchar(buf[i]);
 }
