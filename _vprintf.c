@@ -1,83 +1,52 @@
 #include "main.h"
 
 /**
- * _vprintf - does the actual printinf of the buffer to stdout
+ * _vprintf - does the actual printing
+ * @format: input string.
+ * @arguments: arguments to the function
  *
- * @format: string to replace the specifiers
- * @args: arguments to replace the specifiers
- *
- * Return: length of the string to print
+ * Return: number of chars printed.
  */
-
-int _vprintf(const char *format, va_list args)
+int _vprintf(const char *format, va_list arguments)
 {
-	int j, i;
-	int len = 0;
+	unsigned int i = 0, len = 0, ibuf = 0;
+	int (*function)(va_list, char *, unsigned int);
 	char *buffer;
-	char *s;
 
-	type_t type[] = {
-		{"c", print_char},
-		{"s", print_str},
-		{"i", print_num},
-		{"d", print_num},
-		{"b", print_bin},
-		{"o", print_oct},
-		{"p", print_p},
-		{"u", print_u},
-		{"x", print_h},
-		{"X", print_X},
-		{NULL, NULL}
-	};
+	buffer = malloc(sizeof(char) * 1024);
 
-	buffer = malloc(1024 * sizeof(char));
-
-	if (!buffer)
-	{
-		free(buffer);
+	if (!format || !buffer || (format[i] == '%' && !format[i + 1]))
 		return (-1);
-	}
-
-	if (format == NULL || args == NULL)
-		return (-1);
-
-	for (i = 0; format[i] != '\0'; i++)
+	if (!format[i])
+		return (0);
+	for (i = 0; format && format[i]; i++)
 	{
-		if (format[i] == '%' && format[i + 1] == '%')
-			continue;
-		else if (format[i] == '%')
+		if (format[i] == '%')
 		{
-			if (format[i + 1] == ' ')
-				i += pos(format, i);
-			for (j = 0; type[j].f != NULL; j++)
-			{
-				if (format[i + 1] == *(type[j].op))
+			if (format[i + 1] == '\0')
+			{	print_buf(buffer, ibuf), free(buffer), va_end(arguments);
+				return (-1);
+			}
+			else
+			{	function = get_print_func(format, i + 1);
+				if (function == NULL)
 				{
-					s = type[j].f(args);
-					if (s == NULL)
+					if (format[i + 1] == ' ' && !format[i + 2])
 						return (-1);
-					_strlen(s);
-					_strncat(buffer, s, len);
-					len += _strlen(s);
-					i++;
-					break;
+					handl_buf(buffer, format[i], ibuf), len++, i--;
 				}
-			}
-			if (type[j].f == NULL)
-			{
-				buffer[len] = format[i];
-				len++;
-			}
+				else
+				{
+					len += function(arguments, buffer, ibuf);
+					i += ev_print_func(format, i + 1);
+				}
+			} i++;
 		}
 		else
-		{
-			buffer[len] = format[i];
-			len++;
-		}
+			handl_buf(buffer, format[i], ibuf), len++;
+		for (ibuf = len; ibuf > 1024; ibuf -= 1024)
+			;
 	}
-
-	buffer[len] = '\0';
-	write(1, buffer, len);
-	free(buffer);
+	print_buf(buffer, ibuf), free(buffer), va_end(arguments);
 	return (len);
 }
